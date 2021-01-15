@@ -1,12 +1,17 @@
-from typing import Dict, List, Optional, Union
+from typing import List
 
-from node_utils.errors import ExplorationError, RegistrationError
-from node_utils.typing import BaseNode, NodeClass, NodeAttr, MutateFn, Context
+from node_utils.errors import ExplorationError
+from node_utils.typing import (
+    BaseNode,
+    Context,
+    OptimizeFn,
+    OptimizedNode,
+)
 
 from .base import BaseExplorer
 
 
-class NodeMutator(BaseExplorer[MutateFn, Context]):
+class NodeOptimizer(BaseExplorer[OptimizeFn]):
     """
     Mutating Visitor Generic class:
         visit and modify nodes in a tree-like structure of 'NodeClass'
@@ -15,30 +20,17 @@ class NodeMutator(BaseExplorer[MutateFn, Context]):
         and return it with any necessary modifications
     """
 
-    def update(self, node: BaseNode, context: Optional[Context] = None) -> Optional[BaseNode]:
-        node_class = node.__class__
+    def update(self, node: BaseNode, **context: Context) -> OptimizedNode:
+        fn = self._get_registered_function(node) or self.__generic_update
+        return fn(node, **context)
 
-        if not isinstance(node, self._node_base_class):
-            raise RegistrationError(f"'{node_class.__name__}' is not a '{self.node_class_name}'")
-
-        elif node.__class__ in self._functions.keys():
-            return self._functions[node_class](node, context)
-
-        elif self._node_base_class in self._functions.keys():
-            return self._functions[self._node_base_class](node, context)
-
-        else:
-            return self._generic_visit(node, context)
-
-    def _generic_visit(
-        self, node: BaseNode, context: Optional[Context] = None
-    ) -> Union[BaseNode, None]:
+    def __generic_update(self, node: BaseNode, **context: Context) -> OptimizedNode:
         for attr, old_value in node.iter_attributes():
             if isinstance(old_value, list):
                 new_values: List[BaseNode] = []
                 for old_item in old_value:
                     if isinstance(old_item, self._node_base_class):
-                        new_item = self.update(old_item, context)
+                        new_item = self.update(old_item, **context)
 
                         if new_item is None:
                             continue  # pruned node
@@ -61,7 +53,7 @@ class NodeMutator(BaseExplorer[MutateFn, Context]):
                 setattr(node, attr, new_values)
 
             elif isinstance(old_value, self._node_base_class):
-                new_value = self.update(old_value, context)
+                new_value = self.update(old_value, **context)
 
                 if new_value is None:
                     delattr(node, attr)  # pruned node

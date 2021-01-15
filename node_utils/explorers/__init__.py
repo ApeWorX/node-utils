@@ -1,4 +1,11 @@
 from .base import BaseExplorer
 from .visitor import NodeVisitor
-from .mutator import NodeMutator
+from .optimizer import NodeOptimizer
 from .transformer import NodeTransformer
+
+__all__ = [
+    "BaseExplorer",
+    "NodeVisitor",
+    "NodeOptimizer",
+    "NodeTransformer",
+]
