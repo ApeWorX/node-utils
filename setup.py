@@ -8,6 +8,7 @@ extras_require = {
     "test": [
         "pytest==5.4.1",
         "pytest-xdist",
+        "pytest-coverage",
     ],
     "lint": [
         "black==20.8b1",
