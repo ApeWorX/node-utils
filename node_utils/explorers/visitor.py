@@ -19,7 +19,7 @@ class NodeVisitor(BaseExplorer[VisitFn]):
         fn(node, context)  # NOTE: Doesn't return anything
 
     def __generic_visit(self, node: BaseNode, context: ContextType):
-        for attr, value in node.iter_attributes():
+        for attr, value in iter(node):
             if isinstance(value, list):
                 for item in value:
                     if isinstance(item, self._node_base_class):

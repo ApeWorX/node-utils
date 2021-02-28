@@ -1,20 +1,17 @@
-import dataclasses as _dc
 from typing import Generator, List, Tuple, Type, Union
 
-# Use this decorator when defining new node types from BaseNode
-node_type = _dc.dataclass
+from dataclassy import dataclass, values
 
 NodeClass = Type["BaseNode"]
 NodeAttr = Union[List["BaseNode"], "BaseNode"]
 
 
-@node_type
+@dataclass(slots=True)
 class BaseNode:
-    def iter_attributes(self) -> Generator[Tuple[str, NodeAttr], None, None]:
-        for field in _dc.fields(self):
-            value = getattr(self, field.name)
+    def __iter__(self) -> Generator[Tuple[str, NodeAttr], None, None]:
+        for name, value in values(self).items():
             if isinstance(value, (list, BaseNode)):
-                yield field.name, value
+                yield name, value
 
     @property
     def type(self):

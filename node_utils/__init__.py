@@ -1,6 +1,6 @@
 from .errors import ExplorationError, RegistrationError
 from .explorers import BaseExplorer, NodeOptimizer, NodeTransformer, NodeVisitor
-from .node import BaseNode, node_type
+from .node import BaseNode
 
 __all__ = [
     "BaseNode",
@@ -10,5 +10,4 @@ __all__ = [
     "NodeOptimizer",
     "NodeTransformer",
     "RegistrationError",
-    "node_type",
 ]

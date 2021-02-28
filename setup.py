@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from setuptools import setup, find_packages  # type: ignore
-
+from setuptools import find_packages, setup  # type: ignore
 
 extras_require = {
     "test": [  # `test` GitHub Action jobs uses this
@@ -63,7 +62,7 @@ setup(
     include_package_data=True,
     python_requires=">=3.6, <4",
     install_requires=[
-        "dataclasses ; python_version=='3.6'",
+        "dataclassy>=0.7.2,<0.8.0",
     ],
     extras_require=extras_require,
     py_modules=["node_utils"],

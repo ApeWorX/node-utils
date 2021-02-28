@@ -2,26 +2,22 @@ from typing import List
 
 import pytest  # type: ignore
 
-from node_utils import BaseNode, node_type
+from node_utils import BaseNode
 
 
-@node_type
 class ASTNode(BaseNode):
     pass
 
 
-@node_type
 class Constant(ASTNode):
     value: int
 
 
-@node_type
 class Add(ASTNode):
     lhs: ASTNode
     rhs: ASTNode
 
 
-@node_type
 class Ls(ASTNode):
     members: List[ASTNode]
 
@@ -49,12 +45,12 @@ def test_iter_attributes():
     assert const2 == Constant(2)
     assert const2.value == 2
 
-    attr_iter = const1.iter_attributes()
+    attr_iter = iter(const1)
 
     with pytest.raises(StopIteration):
         next(attr_iter)
 
-    attr_iter = const2.iter_attributes()
+    attr_iter = iter(const2)
 
     with pytest.raises(StopIteration):
         next(attr_iter)
@@ -64,7 +60,7 @@ def test_iter_attributes():
     assert add.lhs == const1 == Constant(1)
     assert add.rhs == const2 == Constant(2)
 
-    attr_iter = add.iter_attributes()
+    attr_iter = iter(add)
 
     assert next(attr_iter) == ("lhs", add.lhs)
     assert next(attr_iter) == ("rhs", add.rhs)
@@ -75,7 +71,7 @@ def test_iter_attributes():
     ls = Ls([const1, const2, add])
     assert ls.members == [const1, const2, add] == [Constant(1), Constant(2), Add(const1, const2)]
 
-    attr_iter = ls.iter_attributes()
+    attr_iter = iter(ls)
     assert next(attr_iter) == ("members", ls.members)
 
     with pytest.raises(StopIteration):

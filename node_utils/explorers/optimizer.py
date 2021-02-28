@@ -20,7 +20,7 @@ class NodeOptimizer(BaseExplorer[OptimizeFn]):
         return fn(node, context)
 
     def __generic_update(self, node: BaseNode, context: ContextType) -> Optional[BaseNode]:
-        for attr, old_value in node.iter_attributes():
+        for attr, old_value in iter(node):
             if isinstance(old_value, list):
                 new_values: List[BaseNode] = []
                 for old_item in old_value:
