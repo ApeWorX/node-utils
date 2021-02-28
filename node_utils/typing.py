@@ -2,7 +2,6 @@ from typing import (
     Callable,
     Optional,
     TypeVar,
-    Union,
 )
 
 from node_utils.node import BaseNode, NodeClass, NodeAttr
@@ -11,18 +10,9 @@ from node_utils.node import BaseNode, NodeClass, NodeAttr
 ContextType = TypeVar("ContextType")
 ReturnType = TypeVar("ReturnType")
 
-VisitFn = Union[
-    Callable[[BaseNode], None],
-    Callable[[BaseNode, ContextType], None],
-]
-OptimizeFn = Union[
-    Callable[[BaseNode], Optional[BaseNode]],
-    Callable[[BaseNode, ContextType], Optional[BaseNode]],
-]
-TransformFn = Union[
-    Callable[[BaseNode], ReturnType],
-    Callable[[BaseNode, ContextType], ReturnType],
-]
+VisitFn = Callable[[BaseNode, Optional[ContextType]], None]
+OptimizeFn = Callable[[BaseNode, Optional[ContextType]], Optional[BaseNode]]
+TransformFn = Callable[[BaseNode, Optional[ContextType]], ReturnType]
 
 FnType = TypeVar("FnType", VisitFn, OptimizeFn, TransformFn)
 

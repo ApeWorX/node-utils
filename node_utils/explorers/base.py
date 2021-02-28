@@ -14,6 +14,13 @@ from node_utils.typing import (
 )
 
 
+def _handle_no_context(fn: FnType) -> FnType:
+    def call(node, context):
+        return fn(node)
+
+    return call
+
+
 class BaseExplorer(Generic[FnType]):
     def __init__(self, node_base_class: NodeClass):
         self._functions: Dict[NodeClass, FnType] = {}
@@ -45,7 +52,7 @@ class BaseExplorer(Generic[FnType]):
 
             if len(sig.parameters) == 1:
                 # Skip providing context, because function doesn't support receiving it
-                self._functions[node_class] = lambda n, c: function(n)  # type: ignore
+                self._functions[node_class] = _handle_no_context(function)
 
             else:
                 self._functions[node_class] = function
