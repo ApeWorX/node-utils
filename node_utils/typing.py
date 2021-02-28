@@ -10,10 +10,21 @@ from node_utils.node import BaseNode, NodeClass, NodeAttr
 
 ContextType = TypeVar("ContextType")
 ReturnType = TypeVar("ReturnType")
-FnType = TypeVar("FnType")
-VisitFn = Callable[[BaseNode, Optional[ContextType]], None]
-OptimizeFn = Callable[[BaseNode, Optional[ContextType]], Union[BaseNode, None]]
-TransformFn = Callable[[BaseNode, Optional[ContextType]], ReturnType]
+
+VisitFn = Union[
+    Callable[[BaseNode], None],
+    Callable[[BaseNode, ContextType], None],
+]
+OptimizeFn = Union[
+    Callable[[BaseNode], Optional[BaseNode]],
+    Callable[[BaseNode, ContextType], Optional[BaseNode]],
+]
+TransformFn = Union[
+    Callable[[BaseNode], ReturnType],
+    Callable[[BaseNode, ContextType], ReturnType],
+]
+
+FnType = TypeVar("FnType", VisitFn, OptimizeFn, TransformFn)
 
 __all__ = [
     "BaseNode",

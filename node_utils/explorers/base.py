@@ -4,6 +4,8 @@ from typing import (
     Optional,
 )
 
+from inspect import signature
+
 from node_utils.errors import RegistrationError
 from node_utils.typing import (
     BaseNode,
@@ -35,6 +37,16 @@ class BaseExplorer(Generic[FnType]):
                     f"'{node_class.__name__}' is not a '{self.node_class_name}'"
                 )
 
+            sig = signature(function)
+            if len(sig.parameters) not in (1, 2):
+                raise RegistrationError(
+                    f"'{function.__name__}' does not have the right number of args."
+                )
+
+            if len(sig.parameters) == 1:
+                # Skip providing context, because function doesn't support receiving it
+                self._functions[node_class] = lambda n, c: function(n)  # type: ignore
+
             else:
                 self._functions[node_class] = function
 
@@ -61,4 +73,4 @@ class BaseExplorer(Generic[FnType]):
             return self._functions[self._node_base_class]
 
         else:
-            return None
+            return None  # Must handle this with a generic caller, or throw
