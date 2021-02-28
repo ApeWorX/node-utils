@@ -20,7 +20,7 @@ class NodeVisitor(BaseExplorer[VisitFn]):
 
     def visit(self, node: BaseNode, context: Optional[ContextType] = None):
         fn = self._get_registered_function(node) or self.__generic_visit
-        return fn(node, context)
+        fn(node, context)  # NOTE: Doesn't return anything
 
     def __generic_visit(self, node: BaseNode, context: ContextType):
         for attr, value in node.iter_attributes():
