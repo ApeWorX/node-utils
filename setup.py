@@ -14,7 +14,7 @@ extras_require = {
         "pydocstyle>=5.1.1,<6",
     ],
     "doc": ["Sphinx>=3.4.3,<4", "sphinx_rtd_theme>=0.5.1"],
-    "dev": ["pytest-watch>=4.2.0,<5", "wheel", "twine", "ipython"],
+    "dev": ["pytest-watch>=4.2.0,<5", "wheel", "twine", "ipython", "ipdb"],
 }
 
 extras_require["dev"] = (
