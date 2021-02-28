@@ -1,15 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from setuptools import setup, find_packages
+from setuptools import setup, find_packages  # type: ignore
 
 
 extras_require = {
-    "test": [
-        "pytest==5.4.1",
-        "pytest-xdist",
-        "pytest-coverage",
-    ],
+    "test": ["pytest==5.4.1", "pytest-xdist", "pytest-coverage"],
     "lint": [
         "black==20.8b1",
         "flake8==3.8.4",
@@ -17,16 +13,8 @@ extras_require = {
         "mypy==0.790",
         "pydocstyle>=5.1.1,<6",
     ],
-    "doc": [
-        "Sphinx>=3.4.3,<4",
-        "sphinx_rtd_theme>=0.5.1",
-    ],
-    "dev": [
-        "pytest-watch>=4.2.0,<5",
-        "wheel",
-        "twine",
-        "ipython",
-    ],
+    "doc": ["Sphinx>=3.4.3,<4", "sphinx_rtd_theme>=0.5.1"],
+    "dev": ["pytest-watch>=4.2.0,<5", "wheel", "twine", "ipython"],
 }
 
 extras_require["dev"] = (

@@ -1,11 +1,10 @@
-from typing import List
+from typing import List, Optional
 
 from node_utils.errors import ExplorationError
 from node_utils.typing import (
     BaseNode,
-    Context,
+    ContextType,
     OptimizeFn,
-    OptimizedNode,
 )
 
 from .base import BaseExplorer
@@ -20,17 +19,17 @@ class NodeOptimizer(BaseExplorer[OptimizeFn]):
         and return it with any necessary modifications
     """
 
-    def update(self, node: BaseNode, **context: Context) -> OptimizedNode:
+    def update(self, node: BaseNode, context: Optional[ContextType] = None) -> Optional[BaseNode]:
         fn = self._get_registered_function(node) or self.__generic_update
-        return fn(node, **context)
+        return fn(node, context)
 
-    def __generic_update(self, node: BaseNode, **context: Context) -> OptimizedNode:
+    def __generic_update(self, node: BaseNode, context: ContextType) -> Optional[BaseNode]:
         for attr, old_value in node.iter_attributes():
             if isinstance(old_value, list):
                 new_values: List[BaseNode] = []
                 for old_item in old_value:
                     if isinstance(old_item, self._node_base_class):
-                        new_item = self.update(old_item, **context)
+                        new_item = self.update(old_item, context)
 
                         if new_item is None:
                             continue  # pruned node
@@ -53,7 +52,7 @@ class NodeOptimizer(BaseExplorer[OptimizeFn]):
                 setattr(node, attr, new_values)
 
             elif isinstance(old_value, self._node_base_class):
-                new_value = self.update(old_value, **context)
+                new_value = self.update(old_value, context)
 
                 if new_value is None:
                     delattr(node, attr)  # pruned node

@@ -1,9 +1,9 @@
-from typing import Generic
+from typing import Generic, Optional
 
 from node_utils.errors import ExplorationError
 from node_utils.typing import (
     BaseNode,
-    Context,
+    ContextType,
     ReturnType,
     TransformFn,
 )
@@ -11,7 +11,7 @@ from node_utils.typing import (
 from .base import BaseExplorer
 
 
-class NodeTransformer(BaseExplorer[TransformFn], Generic[ReturnType]):
+class NodeTransformer(BaseExplorer[TransformFn], Generic[ContextType, ReturnType]):
     """
     Transformer Generic class:
         visit and transform nodes in a tree-like structure of 'NodeClass'
@@ -21,9 +21,9 @@ class NodeTransformer(BaseExplorer[TransformFn], Generic[ReturnType]):
         There is no default (all nodes in tree must have transforms)
     """
 
-    def transform(self, node: BaseNode, context: Context = None) -> ReturnType:
+    def transform(self, node: BaseNode, context: Optional[ContextType] = None) -> ReturnType:
         fn = self._get_registered_function(node)
         if fn is None:
             raise ExplorationError(f"Transform function not found for {node.__class__.__name__}")
         else:
-            return fn(node, **context)
+            return fn(node, context)
