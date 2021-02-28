@@ -10,9 +10,7 @@ NodeAttr = Union[List["BaseNode"], "BaseNode"]
 
 @node_type
 class BaseNode:
-    def iter_attributes(
-        self,
-    ) -> Generator[Tuple[str, NodeAttr], None, None]:
+    def iter_attributes(self) -> Generator[Tuple[str, NodeAttr], None, None]:
         for field in _dc.fields(self):
             value = getattr(self, field.name)
             if isinstance(value, (list, BaseNode)):
