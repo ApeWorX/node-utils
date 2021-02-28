@@ -10,9 +10,6 @@ extras_require = {
         "pytest-xdist",  # multi-process runner
         "pytest-cov",  # Coverage analyzer plugin
     ],
-    "fuzz": [  # `fuzz` GitHub Action job uses this
-        "hypothesis>=6.2.0,<7.0",  # Strategy-based fuzzer
-    ],
     "lint": [
         "black>=20.8b1,<21.0",  # auto-formatter and linter
         "mypy>=0.800,<1.0",  # Static type analyzer
@@ -40,15 +37,11 @@ extras_require = {
 # NOTE: `pip install -e .[dev]` to install package
 extras_require["dev"] = (
     extras_require["test"]
-    + extras_require["fuzz"]
     + extras_require["lint"]
     + extras_require["doc"]
     + extras_require["release"]
     + extras_require["dev"]
 )
-
-# NOTE: This comes after the previous so we don't have double dependencies
-extras_require["fuzz"] = extras_require["test"] + extras_require["fuzz"]
 
 with open("./README.md") as readme:
     long_description = readme.read()
