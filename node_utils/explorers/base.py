@@ -38,6 +38,8 @@ class BaseExplorer(Generic[FnType]):
             else:
                 self._functions[node_class] = function
 
+            return function
+
         return register
 
     @property
