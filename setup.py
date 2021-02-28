@@ -62,7 +62,9 @@ setup(
     url="https://github.com/ApeWorX/node-utils",
     include_package_data=True,
     python_requires=">=3.6, <4",
-    install_requires=[],
+    install_requires=[
+        "dataclasses ; python_version=='3.6'",
+    ],
     extras_require=extras_require,
     py_modules=["node_utils"],
     license="Apache License 2.0",
