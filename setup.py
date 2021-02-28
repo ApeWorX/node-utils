@@ -5,7 +5,7 @@ from setuptools import setup, find_packages  # type: ignore
 
 
 extras_require = {
-    "test": ["pytest==5.4.1", "pytest-xdist", "pytest-coverage"],
+    "test": ["pytest>=6.0,<7.0", "pytest-xdist", "pytest-coverage"],
     "lint": [
         "black==20.8b1",
         "flake8==3.8.4",
