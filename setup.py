@@ -5,36 +5,67 @@ from setuptools import setup, find_packages  # type: ignore
 
 
 extras_require = {
-    "test": ["pytest>=6.0,<7.0", "pytest-xdist", "pytest-coverage"],
-    "lint": [
-        "black==20.8b1",
-        "flake8==3.8.4",
-        "isort>=5.7.0,<6",
-        "mypy==0.790",
-        "pydocstyle>=5.1.1,<6",
+    "test": [  # `test` GitHub Action jobs uses this
+        "pytest>=6.0,<7.0",  # Core testing package
+        "pytest-xdist",  # multi-process runner
+        "pytest-cov",  # Coverage analyzer plugin
     ],
-    "doc": ["Sphinx>=3.4.3,<4", "sphinx_rtd_theme>=0.5.1"],
-    "dev": ["pytest-watch>=4.2.0,<5", "wheel", "twine", "ipython", "ipdb"],
+    "fuzz": [  # `fuzz` GitHub Action job uses this
+        "hypothesis>=6.2.0,<7.0",  # Strategy-based fuzzer
+    ],
+    "lint": [
+        "black>=20.8b1,<21.0",  # auto-formatter and linter
+        "mypy>=0.800,<1.0",  # Static type analyzer
+        "isort>=5.7.0,<6.0",  # Import sorting linter
+    ],
+    "doc": [
+        "Sphinx>=3.4.3,<4",  # Documentation generator
+        "sphinx_rtd_theme>=0.1.9,<1",  # Readthedocs.org theme
+        "towncrier>=19.2.0, <20",  # Generate release notes
+    ],
+    "release": [  # `release` GitHub Action job uses this
+        "setuptools",  # Installation tool
+        "setuptools-scm",  # Installation tool
+        "wheel",  # Packaging tool
+        "twine",  # Package upload tool
+    ],
+    "dev": [
+        "commitizen",  # Manage commits and publishing releases
+        "pytest-watch",  # `ptw` test watcher/runner
+        "IPython",  # Console for interacting
+        "ipdb",  # Debugger (Must use `export PYTHONBREAKPOINT=ipdb.set_trace`)
+    ],
 }
 
+# NOTE: `pip install -e .[dev]` to install package
 extras_require["dev"] = (
-    extras_require["dev"]
-    + extras_require["test"]  # noqa: W504
-    + extras_require["lint"]  # noqa: W504
-    + extras_require["doc"]  # noqa: W504
+    extras_require["test"]
+    + extras_require["fuzz"]
+    + extras_require["lint"]
+    + extras_require["doc"]
+    + extras_require["release"]
+    + extras_require["dev"]
 )
+
+# NOTE: This comes after the previous so we don't have double dependencies
+extras_require["fuzz"] = extras_require["test"] + extras_require["fuzz"]
 
 with open("./README.md") as readme:
     long_description = readme.read()
 
 setup(
     name="node-utils",
-    version="0.1.0",
+    use_scm_version=True,
+    setup_requires=["setuptools_scm"],
+    description=(
+        "node-utils: Utility classes and functions for working "
+        "with generic abstract syntax tree (AST) nodes."
+    ),
     long_description=long_description,
     long_description_content_type="text/markdown",
     author="ApeWorX Ltd.",
     author_email="admin@apeworx.io",
-    url="https://github.com/apeworx/node-utils",
+    url="https://github.com/ApeWorX/node-utils",
     include_package_data=True,
     python_requires=">=3.6, <4",
     install_requires=[],
@@ -42,8 +73,9 @@ setup(
     py_modules=["node_utils"],
     license="Apache License 2.0",
     zip_safe=False,
-    keywords="ethereum",
+    keywords="ast nodes compiler",
     packages=find_packages(exclude=["tests", "tests.*"]),
+    package_data={"node_utils": ["py.typed"]},
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Intended Audience :: Developers",
@@ -53,5 +85,6 @@ setup(
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
     ],
 )
