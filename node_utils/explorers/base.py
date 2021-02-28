@@ -1,17 +1,8 @@
-from typing import (
-    Dict,
-    Generic,
-    Optional,
-)
-
 from inspect import signature
+from typing import Dict, Generic, Optional
 
 from node_utils.errors import RegistrationError
-from node_utils.typing import (
-    BaseNode,
-    FnType,
-    NodeClass,
-)
+from node_utils.typing import BaseNode, FnType, NodeClass
 
 
 def _handle_no_context(fn: FnType) -> FnType:

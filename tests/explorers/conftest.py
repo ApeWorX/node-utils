@@ -1,6 +1,6 @@
 import pytest
 
-from node_utils import BaseNode, NodeVisitor, NodeOptimizer, NodeTransformer
+from node_utils import BaseNode, NodeOptimizer, NodeTransformer, NodeVisitor
 
 
 @pytest.fixture(scope="session")

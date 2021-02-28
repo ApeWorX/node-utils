@@ -1,12 +1,5 @@
-from typing import (
-    Generator,
-    List,
-    Tuple,
-    Type,
-    Union,
-)
-
 import dataclasses as _dc
+from typing import Generator, List, Tuple, Type, Union
 
 # Use this decorator when defining new node types from BaseNode
 node_type = _dc.dataclass

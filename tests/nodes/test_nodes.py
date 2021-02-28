@@ -1,6 +1,7 @@
+from typing import List
+
 import pytest  # type: ignore
 
-from typing import List
 from node_utils import BaseNode, node_type
 
 

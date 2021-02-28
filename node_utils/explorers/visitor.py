@@ -1,11 +1,7 @@
 from typing import Optional
 
 from node_utils.errors import ExplorationError
-from node_utils.typing import (
-    BaseNode,
-    ContextType,
-    VisitFn,
-)
+from node_utils.typing import BaseNode, ContextType, VisitFn
 
 from .base import BaseExplorer
 

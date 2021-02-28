@@ -1,7 +1,7 @@
 from .base import BaseExplorer
-from .visitor import NodeVisitor
 from .optimizer import NodeOptimizer
 from .transformer import NodeTransformer
+from .visitor import NodeVisitor
 
 __all__ = [
     "BaseExplorer",

@@ -1,12 +1,7 @@
 from typing import Generic, Optional
 
 from node_utils.errors import ExplorationError
-from node_utils.typing import (
-    BaseNode,
-    ContextType,
-    ReturnType,
-    TransformFn,
-)
+from node_utils.typing import BaseNode, ContextType, ReturnType, TransformFn
 
 from .base import BaseExplorer
 

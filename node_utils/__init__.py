@@ -1,6 +1,5 @@
 from .errors import ExplorationError, RegistrationError
-
-from .explorers import BaseExplorer, NodeVisitor, NodeOptimizer, NodeTransformer
+from .explorers import BaseExplorer, NodeOptimizer, NodeTransformer, NodeVisitor
 from .node import BaseNode, node_type
 
 __all__ = [

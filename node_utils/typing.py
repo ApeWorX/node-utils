@@ -1,11 +1,6 @@
-from typing import (
-    Callable,
-    Optional,
-    TypeVar,
-)
+from typing import Callable, Optional, TypeVar
 
-from node_utils.node import BaseNode, NodeClass, NodeAttr
-
+from node_utils.node import BaseNode, NodeAttr, NodeClass
 
 ContextType = TypeVar("ContextType")
 ReturnType = TypeVar("ReturnType")
