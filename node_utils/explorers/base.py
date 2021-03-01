@@ -63,12 +63,14 @@ class BaseExplorer(Generic[FnType]):
             raise RegistrationError(f"'{node_class.__name__}' is not a '{self.node_class_name}'")
 
         elif node_class in self._functions.keys():
-            # User's registered function
+            # User's registered function for specific class takes precedence
             return self._functions[node_class]
 
-        elif self._node_base_class in self._functions.keys():
-            # User's registered default
-            return self._functions[self._node_base_class]
-
         else:
-            return None  # Must handle this with a generic caller, or throw
+            # See if we have a function registered for one of it's ancestors
+            # NOTE: This includes the one registered for `node_base_class`, if available
+            for ancestor in node._ancestors():
+                if ancestor in self._functions.keys():
+                    return self._functions[ancestor]
+
+        return None  # Must handle this with a generic caller, or else it should throw
